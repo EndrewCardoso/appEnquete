@@ -1,5 +1,5 @@
 import { NativeBaseProvider, StatusBar } from 'native-base';
-import Login from './src/views/login';
+import Login from './src/views/Login';
 
 export default function App() {
   return (
