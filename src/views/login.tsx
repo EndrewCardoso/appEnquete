@@ -1,6 +1,7 @@
-import { VStack, Image, Text, FormControl, Input, Button } from 'native-base';
+import { VStack, Text, FormControl, Input, Button } from 'native-base';
+import React from 'react';
 
-export default function Login() {
+export default function Login({navigation}) {
   return (
     <VStack flex={1} alignContent='center' justifyContent='center' m={8}>
       <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Olá, faça o seu login!</Text>
@@ -12,7 +13,8 @@ export default function Login() {
         <FormControl.Label>Senha</FormControl.Label>
         <Input placeholder='Digite a senha.' w='100%' mb={4}/>
 
-        <Button>Logar</Button>
+        {/* <Button onPress={() => this.props.navigation.navigate("Principal")}>Logar</Button> */}
+        <Button onPress={()=>navigation.navigate('Principal')}>Logar</Button>
       </FormControl>
     </VStack>
   );

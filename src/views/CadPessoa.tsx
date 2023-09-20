@@ -1,6 +1,6 @@
-import { VStack, Image, Text, FormControl, Input, Button } from 'native-base';
+import { VStack, Text, FormControl, Input, Button } from 'native-base';
 
-export default function CadPessoa() {
+export default function CadPessoa({navigation}) {
   return (
     <VStack flex={1} alignContent='center' justifyContent='center' m={8}>
         <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Cadastre uma pessoa.</Text>
@@ -18,7 +18,7 @@ export default function CadPessoa() {
             <FormControl.Label>Senha</FormControl.Label>
             <Input placeholder='Digite a senha.' w='100%' mb={4}/>
 
-            <Button>Logar</Button>
+            <Button>Salvar</Button>
         </FormControl>
     </VStack>
   );
