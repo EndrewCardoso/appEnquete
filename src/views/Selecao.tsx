@@ -1,17 +1,31 @@
-import { VStack, Button, Input } from 'native-base';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { VStack, Button, Input, Image, Text } from 'native-base';
+import Icon from 'react-native-vector-icons/Entypo';
+import Logo from '../assets/Logo.png';
 
 export default function Selecao({navigation}) {
   return (
-      <VStack flex={1} m={4}>
-        <Button 
-            w='50%'
-            onPress={()=>navigation.navigate('Login')}>Conectar-se</Button>
+    <VStack flex={1} p={2}>
+      <VStack alignItems={'flex-end'}>
+            {/* <Button alignContent={'center'} onPress={()=>navigation.navigate('Login')}>
+              <VStack direction={'row'} mr={1}>
+                <Text color='white' mr={1}>Login</Text>
+                <Icon name='login' size={25} color='#fff'/>
+              </VStack>
+            </Button> */}
 
-            <VStack alignItems={'center'} direction={'row'} mt={4}>
-                <Input placeholder='Insira o código da Pergunta.' w='80%' mr={2}/>
-                <Button onPress={()=>navigation.navigate('Pergunta')}>Inserir</Button>
-            </VStack>
+        <Button 
+          onPress={()=>navigation.navigate('Login')}
+          endIcon={<Icon as={Icon} name='login' size={25} color='#fff'/>}>Login</Button>
+      </VStack>
+
+      <Image alignSelf={'center'} source={Logo} size={200} mt={50} alt='Logo do app'/>
+
+      <VStack direction={'row'} mt={50}>
+          <Input placeholder='Insira o código da Pergunta.' w='83%' mr={2}/>
+          <Button onPress={()=>navigation.navigate('Pergunta')}>
+            <Icon name='forward' size={25} color='#fff'/>
+          </Button>
+      </VStack>
     </VStack>
   );
 }
