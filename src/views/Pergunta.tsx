@@ -1,50 +1,64 @@
-import { VStack, Text, Button, Checkbox, Box } from 'native-base';
-import { useState } from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { VStack, Text, Button, Box, Radio, FormControl, Toast } from 'native-base';
+import { useEffect, useState } from 'react';
+import { getPergunta, saveResultado } from '../servicos/pergunta';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Pergunta({navigation}) {
 
-  const [isChecked, setIsChecked] = useState(false);
+ const [radioValue, SetRadioValue] = useState('');
+ const [pergunta, setPergunta] = useState<Pergunta>();
 
-  const toggleCheckbox = () => {
-    setIsChecked(!isChecked); 
-  };
+ useEffect(()=>{
+  AsyncStorage.getItem('codigoPergunta').then(codigo => {
+    getPergunta(parseInt(codigo)).then(p => {
+      
+      //TODO: Ver como é possível fazer essa parte.
+      // let perguntaAux = JSON.parse(p.data);
+      
+      //setPergunta(p.data.result);
+      // console.log(p.data);
+      // console.log(perguntaAux);
+      //pergunta = JSON.parse(p.data.result);
+    })
+  })
+ },[]);
+
+const responder = async () => {
+  const res = await saveResultado(pergunta.id, radioValue);
+
+  if (res) {
+    navigation.navigate('Selecao')
+  }
+}
 
     return (
-      <VStack flex={1} m={4}>
-          <Box 
-            bg={{
-              linearGradient: {
-                colors: ['lightBlue.300', 'violet.800'],
-                start: [0, 0],
-                end: [1, 0]
-              }
-            }} p="12" rounded="xl" _text={{
-              fontSize: 'md',
+      <VStack flex={1} m={2}>
+
+        <Box
+            mb={4}
+            bg={'primary.400:alpha.30'}
+            p="6" 
+            rounded="xl" 
+            _text={{
+              fontSize: 'xl',
               fontWeight: 'medium',
-              color: '#bbb',
+              color: '#aaa',
               textAlign: 'justify'
             }}>
-            <Text color={'#aaa'} fontSize={'lg'}>Titulo</Text>
-
-            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
+            {pergunta?.titulo}
+            <Text color={'#aaa'} fontSize={'lg'}>{pergunta?.descricao}</Text>
         </Box>
-        
-        <VStack m={4}>
-          <Text color={'#aaa'} fontSize={'lg'}>Selecione a opção desejada!</Text>
+        <Box p="6">
+            <Text color={'#aaa'} fontSize={'lg'}>Selecione a opção desejada!</Text>
+            <Radio.Group name='radioResposta' value={radioValue} onChange={(nextValue)=>{
+              SetRadioValue(nextValue);
+            }}>
+              <Radio value='Sim' my={1}>Sim</Radio>  
+              <Radio value='Nao'>Não</Radio>  
+            </Radio.Group>  
+        </Box>
 
-          <Checkbox m={2} isChecked={isChecked} onChange={toggleCheckbox}>
-              <Text color={'#bbb'} fontSize={'md'}>Sim</Text>
-          </Checkbox>
-
-          <Checkbox m={2} isChecked={isChecked} onChange={toggleCheckbox}>
-              <Text color={'#bbb'} fontSize={'md'}>Não</Text>
-          </Checkbox>
-        </VStack>
-
-        <Button 
-            mt={4}
-            onPress={()=>navigation.navigate('Selecao')}>Enviar Resposta</Button>
+        <Button onPress={()=>responder}>Enviar Resposta</Button>
       </VStack>
   );
 }

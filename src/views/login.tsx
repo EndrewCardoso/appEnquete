@@ -1,9 +1,24 @@
 import { VStack, Text, FormControl, Input, Button } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import IconCadPessoa from 'react-native-vector-icons/FontAwesome';
+import { efetuarLogin } from '../servicos/login';
 
 export default function Login({navigation}) {
+    
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  const logar = async () => {
+    const result = await efetuarLogin(email, senha);
+
+    console.log(result);
+    if (result) {
+      let ambiente: Ambiente = result.data;
+      navigation.navigate('Principal', ambiente);
+    }
+  }
+
   return (
     <VStack flex={1} p={2}>
       <VStack alignItems={'flex-end'}>
@@ -17,13 +32,13 @@ export default function Login({navigation}) {
 
         <FormControl>
           <FormControl.Label>Usuário</FormControl.Label>
-          <Input placeholder='Digite o usuário.' w='100%' mb={4}/>
+          <Input placeholder='Digite o usuário.' w='100%' mb={4} value={email} onChangeText={setEmail}/>
 
           <FormControl.Label>Senha</FormControl.Label>
-          <Input placeholder='Digite a senha.' w='100%' mb={4}/>
+          <Input placeholder='Digite a senha.' w='100%' mb={4} value={senha} onChangeText={setSenha}/>
 
           <Button 
-            onPress={()=>navigation.navigate('Principal')}
+            onPress={logar}
             endIcon={<Icon as={Icon} name='forward' size={25} color='#fff'/>}>Entrar</Button>
         </FormControl>
       </VStack>

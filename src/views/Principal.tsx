@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Principal({navigation}) { 
+
   return (
     <VStack flex={1} p={2}>
         <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Bem Vindo!</Text>
