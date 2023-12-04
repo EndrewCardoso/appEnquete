@@ -3,15 +3,26 @@ import Icon from 'react-native-vector-icons/Entypo';
 import Logo from '../assets/Logo.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
+import { getPergunta } from '../servicos/pergunta';
 
 export default function Selecao({navigation}) {
 
   const [codPergunta, setCodPergunta] = useState('');
 
-  async function getPergunta() {
+  async function verifyPergunta() {
     try {
-      AsyncStorage.setItem('codigoPergunta', codPergunta);
-      navigation.navigate('Pergunta');
+      getPergunta(parseInt(codPergunta)).then(res => {
+          if (res && res.data.result[0]) {
+            AsyncStorage.setItem('codigoPergunta', codPergunta);
+            navigation.navigate('Pergunta');
+          } else {
+            Toast.show({
+              title: 'Erro',
+              description: 'O código da pergunta é inexistente!',
+              backgroundColor: 'red.500'
+            });
+          }
+      })
     } catch (error) {
       Toast.show({
         title: 'Erro',
@@ -34,7 +45,7 @@ export default function Selecao({navigation}) {
 
       <VStack direction={'row'} mt={50}>
           <Input placeholder='Insira o código da Pergunta.' w='83%' mr={2} value={codPergunta} onChangeText={setCodPergunta}/>
-          <Button onPress={()=>getPergunta()}>
+          <Button onPress={verifyPergunta}>
             <Icon name='forward' size={25} color='#fff'/>
           </Button>
       </VStack>

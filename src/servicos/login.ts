@@ -10,7 +10,6 @@ const efetuarLogin = async (email: string, senha: string) => {
             }
         })
     
-        console.log(result.data);
         return result.data;
     } catch(error) {
         console.log(error);

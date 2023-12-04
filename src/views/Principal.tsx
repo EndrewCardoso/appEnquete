@@ -1,87 +1,61 @@
-import { VStack, Text, Button, Box, NativeBaseProvider } from 'native-base';
+import { VStack, Text, Button, ScrollView } from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { LinearGradient } from 'expo-linear-gradient';
+import Caixa from '../components/Caixa';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getPerguntaByUser } from '../servicos/pergunta';
 
 export default function Principal({navigation}) { 
 
+  const [ambiente, setAmbiente] = useState<Ambiente>();
+  const [perguntas, setPerguntas] = useState<Pergunta[]>();
+
+  let popularPerguntas = async () => {
+    
+    console.log('buscando perguntas...')
+    if (!perguntas) {
+      await AsyncStorage.getItem('ambiente').then(json => {
+        setAmbiente(JSON.parse(json));
+  
+        getPerguntaByUser(ambiente.user.id, ambiente.token).then(res => {
+          if (res) {
+            setPerguntas(res.data.result);  
+          } else {
+            return null;
+          }
+        });
+      });
+    }
+  }
+
+  const InserirPergunta = async () => {
+     await AsyncStorage.removeItem('pergunta').then(res => {
+       navigation.navigate('CadPergunta');
+     });
+  }
+
+  useEffect(() => {
+    popularPerguntas();
+  })
+
   return (
     <VStack flex={1} p={2}>
-        <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Bem Vindo!</Text>
+        <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Bem Vindo(a)! {ambiente?.user.nome}</Text>
 
         <VStack alignItems={'flex-end'}>
+          {/* <Button 
+            size={10}
+            onPress={popularPerguntas}>Popular Perguntas</Button> */}
+
           <Button 
             size={20}
-            onPress={()=>navigation.navigate('CadPergunta')}
+            onPress={InserirPergunta}
             endIcon={<Icon as={Icon} name='new-message' size={25} color='#fff'/>}></Button>
       </VStack>
 
-      <Box 
-        bg={{
-          linearGradient: {
-            colors: ['lightBlue.300', 'violet.800'],
-            start: [0, 0],
-            end: [1, 0]
-          }
-        }} p="12" rounded="xl" _text={{
-          fontSize: 'md',
-          fontWeight: 'medium',
-          color: '#bbb',
-          textAlign: 'justify'
-        }}>
-          <VStack direction={'row'} mb={2}>
-          <Text w='50%' color={'#aaa'} fontSize={'lg'}>Pergunta 1</Text>
-
-          <Button 
-            background={'transparent'}
-            onPress={()=>navigation.navigate('')}
-            endIcon={<FontAwesome as={FontAwesome} name='bar-chart' size={20} color='#aaa'/>}></Button>
-          <Button 
-            background={'transparent'}
-            onPress={()=>navigation.navigate('')}
-            endIcon={<AntDesign as={AntDesign} name='form' size={20} color='#aaa'/>}></Button>
-          <Button 
-            background={'transparent'}
-            onPress={()=>navigation.navigate('')}
-            endIcon={<AntDesign as={AntDesign} name='delete' size={20} color='#aaa'/>}></Button>
-          </VStack>
-
-            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
-      </Box>
-
-      <Box 
-        bg={{
-          linearGradient: {
-            colors: ['#000', '#fff'],
-            start: [0, 0],
-            end: [1, 0]
-          }
-        }} p="12" rounded="xl" _text={{
-          fontSize: 'md',
-          fontWeight: 'medium',
-          color: '#bbb',
-          textAlign: 'justify'
-        }}>
-          <VStack direction={'row'} mb={2}>
-            <Text w='50%' color={'#aaa'} fontSize={'lg'}>Pergunta 2</Text>
-
-            <Button 
-              background={'transparent'}
-              onPress={()=>navigation.navigate('')}
-              endIcon={<FontAwesome as={FontAwesome} name='bar-chart' size={20} color='#aaa'/>}></Button>
-            <Button 
-              background={'transparent'}
-              onPress={()=>navigation.navigate('')}
-              endIcon={<AntDesign as={AntDesign} name='form' size={20} color='#aaa'/>}></Button>
-            <Button 
-              background={'transparent'}
-              onPress={()=>navigation.navigate('')}
-              endIcon={<AntDesign as={AntDesign} name='delete' size={20} color='#aaa'/>}></Button>
-          </VStack>
-
-          The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
-      </Box>
+      <ScrollView>
+        { perguntas?.map((perguntaMap) => ( <Caixa navigation={navigation} pergunta={perguntaMap} token={ambiente.token} /> )) }
+      </ScrollView>
     </VStack>
   );
 }

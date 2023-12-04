@@ -6,6 +6,8 @@ import Login from '../views/Login';
 import CadPergunta from '../views/CadPergunta';
 import CadPessoa from '../views/CadPessoa';
 import Pergunta from '../views/Pergunta';
+import Resultados from '../views/Resultados';
+import Grafico from '../views/Grafico';
 
 const Pilha = createStackNavigator();
 
@@ -41,6 +43,16 @@ export default function Rotas() {
           <Pilha.Screen
             name='Pergunta'
             component={Pergunta}
+            options={{headerShown:false}}
+          />
+          <Pilha.Screen
+            name='Resultados'
+            component={Resultados}
+            options={{headerShown:false}}
+          />
+          <Pilha.Screen
+            name='Grafico'
+            component={Grafico}
             options={{headerShown:false}}
           />
         </Pilha.Navigator>
