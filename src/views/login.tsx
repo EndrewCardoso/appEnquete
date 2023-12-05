@@ -52,7 +52,7 @@ export default function Login({navigation}) {
           <Input placeholder='Digite o e-mail.' w='100%' mb={4} value={email} onChangeText={setEmail}/>
 
           <FormControl.Label>Senha</FormControl.Label>
-          <Input placeholder='Digite a senha.' w='100%' mb={4} value={senha} onChangeText={setSenha}/>
+          <Input placeholder='Digite a senha.' w='100%' mb={4} value={senha} onChangeText={setSenha} secureTextEntry/>
 
           <Button 
             onPress={logar}

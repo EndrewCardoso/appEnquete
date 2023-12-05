@@ -28,7 +28,7 @@ export default function CadPessoa({navigation}) {
 
   return (
     <VStack flex={1} alignContent='center' justifyContent='center' m={8}>
-        <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Cadastre uma pessoa.</Text>
+        <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Cadastre um usuário.</Text>
 
         <FormControl>
             <FormControl.Label>Nome</FormControl.Label>

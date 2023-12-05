@@ -40,7 +40,7 @@ export default function Principal({navigation}) {
 
   return (
     <VStack flex={1} p={2}>
-        <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Bem Vindo(a)! {ambiente?.user.nome}</Text>
+        <Text w='100%' textAlign='center' fontSize={20} fontWeight='bold' mb={8}>Bem-Vindo(a), {ambiente?.user.nome}!</Text>
 
         <VStack alignItems={'flex-end'}>
           {/* <Button 
